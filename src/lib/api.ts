@@ -30,9 +30,8 @@ export function getAccessToken(): string | null {
 // ── Silent token refresh ─────────────────────────────────────────────────────
 async function doRefresh(): Promise<string | null> {
   try {
-    const res = await fetch(`${BASE_URL}/auth/refresh`, {
+    const res = await fetch('/api/auth/refresh', {
       method: 'POST',
-      credentials: 'include',
     });
     if (!res.ok) return null;
     const json = await res.json();

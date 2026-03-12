@@ -57,10 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async function rehydrate() {
       try {
         // Try to get a fresh access token via the httpOnly refresh cookie
-        const refreshRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:7001/api/v1'}/auth/refresh`,
-          { method: 'POST', credentials: 'include' }
-        );
+        const refreshRes = await fetch('/api/auth/refresh', { method: 'POST' });
 
         if (!refreshRes.ok) {
           // No valid session — stay on whatever page (middleware handles redirect)

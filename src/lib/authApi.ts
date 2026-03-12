@@ -1,7 +1,7 @@
 /**
  * Typed wrappers for every /auth endpoint.
  */
-import { apiFetch, apiUpload } from './api';
+import { apiFetch, apiUpload, getAccessToken, ApiError } from './api';
 import type { AuthUser } from '@/types/auth';
 
 interface ApiResponse<T> {
@@ -18,17 +18,23 @@ export interface LoginResponse {
 }
 
 export async function loginApi(email: string, password: string) {
-  const res = await apiFetch<ApiResponse<LoginResponse>>('/auth/login', {
+  const res = await fetch('/api/auth/login', {
     method: 'POST',
-    skipAuth: true,
-    body: { email, password },
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email, password }),
   });
-  return res.data;
+  const json = await res.json().catch(() => null);
+  if (!res.ok) throw new ApiError(json?.message ?? 'Login failed', res.status);
+  return (json as ApiResponse<LoginResponse>).data;
 }
 
 // ── Logout ────────────────────────────────────────────────────────────────────
 export async function logoutApi() {
-  await apiFetch('/auth/logout', { method: 'POST' });
+  const token = getAccessToken();
+  await fetch('/api/auth/logout', {
+    method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
 }
 
 // ── Get current user ─────────────────────────────────────────────────────────
