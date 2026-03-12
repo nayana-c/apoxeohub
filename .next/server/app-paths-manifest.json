@@ -1,0 +1,19 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/(app)/admin/holidays/page": "app/(app)/admin/holidays/page.js",
+  "/(app)/admin/leave-types/page": "app/(app)/admin/leave-types/page.js",
+  "/(app)/admin/settings/page": "app/(app)/admin/settings/page.js",
+  "/(app)/apply-leave/page": "app/(app)/apply-leave/page.js",
+  "/(app)/approvals/page": "app/(app)/approvals/page.js",
+  "/(app)/profile/page": "app/(app)/profile/page.js",
+  "/(app)/admin/employees/page": "app/(app)/admin/employees/page.js",
+  "/(app)/admin/reports/page": "app/(app)/admin/reports/page.js",
+  "/(app)/page": "app/(app)/page.js",
+  "/(app)/calendar/page": "app/(app)/calendar/page.js",
+  "/(app)/team/page": "app/(app)/team/page.js",
+  "/(app)/admin/departments/page": "app/(app)/admin/departments/page.js",
+  "/(auth)/login/page": "app/(auth)/login/page.js",
+  "/(auth)/reset-password/page": "app/(auth)/reset-password/page.js",
+  "/(auth)/set-password/page": "app/(auth)/set-password/page.js",
+  "/(app)/my-requests/page": "app/(app)/my-requests/page.js"
+}
