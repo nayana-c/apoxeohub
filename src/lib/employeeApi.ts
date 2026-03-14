@@ -60,6 +60,8 @@ export interface CreateEmployeePayload {
   email: string;
   password: string;
   role: 'employee' | 'manager' | 'hr' | 'admin';
+  department?: string;
+  managerId?: string;
   joinDate?: string;
   phone?: string;
   address?: string;

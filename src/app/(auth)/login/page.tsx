@@ -1,9 +1,11 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import { ApiError } from '@/lib/api';
 import ForgotPasswordModal from '@/components/auth/ForgotPasswordModal';
+import logoImg from '@/app/assets/apoxeo-hub_logo.png';
 
 // ── Eye icons ─────────────────────────────────────────────────────────────────
 function EyeOpen() {
@@ -68,10 +70,7 @@ export default function LoginPage() {
           {/* ── Card header ─────────────────────────────────────── */}
           <div className="auth-header">
             <div className="auth-logo-wrap">
-              <div className="auth-logo-icon">📋</div>
-              <div className="auth-logo-text">
-                Apoxeo<span>HUB</span>
-              </div>
+              <Image src={logoImg} alt="ApoxeoHUB" height={16} style={{ width: 'auto' }} priority />
             </div>
 
             <div className="auth-title">Welcome back</div>

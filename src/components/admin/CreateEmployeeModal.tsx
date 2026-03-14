@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { createEmployeeApi, type CreateEmployeePayload } from '@/lib/employeeApi';
+import { useState, useEffect } from 'react';
+import { createEmployeeApi, listEmployeesApi, type CreateEmployeePayload } from '@/lib/employeeApi';
+import { listDepartmentsApi, type ApiDepartment } from '@/lib/departmentApi';
 import { ApiError } from '@/lib/api';
 import type { ApiEmployee } from '@/types';
 
@@ -17,6 +18,13 @@ const ROLES = [
   { value: 'admin',   label: 'Admin' },
 ] as const;
 
+const ROLE_BADGE: Record<string, string> = {
+  employee: 'Employee',
+  manager:  'Manager',
+  hr:       'HR',
+  admin:    'Admin',
+};
+
 const defaultForm: CreateEmployeePayload = {
   name: '',
   email: '',
@@ -27,10 +35,25 @@ const defaultForm: CreateEmployeePayload = {
 
 export default function CreateEmployeeModal({ onClose, onCreated }: Props) {
   const [form, setForm] = useState<CreateEmployeePayload>(defaultForm);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [showPass, setShowPass] = useState(false);
-  const [showOptional, setShowOptional] = useState(false);
+  const [loading, setLoading]                   = useState(false);
+  const [error, setError]                       = useState<string | null>(null);
+  const [showPass, setShowPass]                 = useState(false);
+  const [showOptional, setShowOptional]         = useState(false);
+  const [departments, setDepartments]           = useState<ApiDepartment[]>([]);
+  const [managers, setManagers]                 = useState<ApiEmployee[]>([]);
+  const [dropdownsLoading, setDropdownsLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([
+      listDepartmentsApi().catch(() => [] as ApiDepartment[]),
+      listEmployeesApi({ limit: 200, status: 'active', sortBy: 'name', sortOrder: 'asc' })
+        .then((r) => r.data)
+        .catch(() => [] as ApiEmployee[]),
+    ]).then(([depts, allEmployees]) => {
+      setDepartments(depts);
+      setManagers(allEmployees);
+    }).finally(() => setDropdownsLoading(false));
+  }, []);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
     setError(null);
@@ -87,6 +110,7 @@ export default function CreateEmployeeModal({ onClose, onCreated }: Props) {
         {/* Form */}
         <form onSubmit={handleSubmit}>
           <div className="form-grid">
+
             {/* Full Name */}
             <div className="form-group full">
               <label className="form-label">Full Name *</label>
@@ -173,6 +197,48 @@ export default function CreateEmployeeModal({ onClose, onCreated }: Props) {
                 disabled={loading}
               />
             </div>
+
+            {/* Department */}
+            <div className="form-group">
+              <label className="form-label">Department</label>
+              <select
+                className="form-select"
+                name="department"
+                value={form.department ?? ''}
+                onChange={handleChange}
+                disabled={loading || dropdownsLoading}
+              >
+                <option value="">— None —</option>
+                {departments.map((d) => (
+                  <option key={d._id} value={d._id}>{d.name}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Manager — shows all active employees with their role */}
+            <div className="form-group">
+              <label className="form-label">
+                Manager
+                <span style={{ fontSize: 10, color: 'var(--text-3)', marginLeft: 6, fontWeight: 400 }}>
+                  any role can manage
+                </span>
+              </label>
+              <select
+                className="form-select"
+                name="managerId"
+                value={form.managerId ?? ''}
+                onChange={handleChange}
+                disabled={loading || dropdownsLoading}
+              >
+                <option value="">— None —</option>
+                {managers.map((m) => (
+                  <option key={m._id} value={m._id}>
+                    {m.name} ({m.employeeId}) · {ROLE_BADGE[m.role] ?? m.role}
+                  </option>
+                ))}
+              </select>
+            </div>
+
           </div>
 
           {/* Optional fields toggle */}

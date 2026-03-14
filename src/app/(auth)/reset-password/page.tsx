@@ -1,10 +1,12 @@
 'use client';
 
 import { useState, useEffect, type FormEvent, Suspense } from 'react';
+import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { resetPasswordApi } from '@/lib/authApi';
 import { ApiError } from '@/lib/api';
 import Link from 'next/link';
+import logoImg from '@/app/assets/apoxeo-hub_logo.png';
 
 // ── Eye icons ─────────────────────────────────────────────────────────────────
 function EyeOpen() {
@@ -74,8 +76,7 @@ function ResetPasswordForm() {
       <div className="auth-card">
         <div className="auth-header">
           <div className="auth-logo-wrap">
-            <div className="auth-logo-icon">📋</div>
-            <div className="auth-logo-text">Apoxeo<span>HUB</span></div>
+            <Image src={logoImg} alt="ApoxeoHUB" height={44} style={{ width: 'auto' }} priority />
           </div>
           <div style={{ fontSize: 28, marginBottom: 14 }}>🔗</div>
           <div className="auth-title">Link Invalid</div>
@@ -96,8 +97,7 @@ function ResetPasswordForm() {
       <div className="auth-card">
         <div className="auth-header">
           <div className="auth-logo-wrap">
-            <div className="auth-logo-icon">📋</div>
-            <div className="auth-logo-text">Leave<span>OS</span></div>
+            <Image src={logoImg} alt="ApoxeoHUB" height={44} style={{ width: 'auto' }} priority />
           </div>
           <div style={{ fontSize: 32, marginBottom: 14 }}>✅</div>
           <div className="auth-title">Password Reset!</div>

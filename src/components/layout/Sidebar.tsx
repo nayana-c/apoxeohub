@@ -1,11 +1,13 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { navigationSections, roleLabelMap } from '@/constants/navigation';
 import { useAuth } from '@/context/AuthContext';
 import { useNavCounts } from '@/context/NavCountsContext';
 import type { UserRole } from '@/types/auth';
+import logoImg from '@/app/assets/apoxeo-hub_logo.png';
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -64,10 +66,7 @@ export default function Sidebar() {
     <aside className="sidebar">
       {/* Logo */}
       <div className="logo">
-        <div className="logo-icon">📋</div>
-        <div className="logo-text">
-          Apoxeo<span>HUB</span>
-        </div>
+        <Image src={logoImg} alt="ApoxeoHUB" height={24} style={{ width: 'auto' }} priority />
       </div>
 
       {/* Navigation */}  

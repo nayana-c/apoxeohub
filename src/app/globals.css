@@ -6,9 +6,16 @@
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
 :root {
+  color-scheme: dark;
   --navy: #0D1B2A;
   --navy-2: #132236;
+  --cusnavy-34: #001B29;
   --navy-3: #1A2F47;
   --navy-4: #1E3A5F;
   --accent: #3B82F6;
@@ -39,7 +46,8 @@ body {
 /* ── SIDEBAR ── */
 .sidebar {
   width: var(--sidebar-w);
-  background: var(--navy-2);
+  /* background: var(--navy-2); */
+  background: var(--cusnavy-34);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;

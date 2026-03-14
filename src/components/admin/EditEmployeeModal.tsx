@@ -26,6 +26,13 @@ const ROLES = [
   { value: 'admin',    label: 'Admin' },
 ] as const;
 
+const ROLE_BADGE: Record<string, string> = {
+  employee: 'Employee',
+  manager:  'Manager',
+  hr:       'HR',
+  admin:    'Admin',
+};
+
 function resolveManagerId(managerId: ApiEmployee['managerId']): string | null {
   if (!managerId) return null;
   if (typeof managerId === 'object' && '_id' in managerId) return managerId._id;
@@ -224,10 +231,19 @@ export default function EditEmployeeModal({ employee, onClose, onUpdated }: Prop
             </div>
 
             <div className="form-group">
-              <label className="form-label">Manager</label>
+              <label className="form-label">
+                Manager
+                <span style={{ fontSize: 10, color: 'var(--text-3)', marginLeft: 6, fontWeight: 400 }}>
+                  any role can manage
+                </span>
+              </label>
               <select className="form-select" name="managerId" value={form.managerId ?? ''} onChange={handleChange} disabled={busy || dropdownsLoading}>
                 <option value="">— None —</option>
-                {managers.map((m) => <option key={m._id} value={m._id}>{m.name} ({m.employeeId})</option>)}
+                {managers.map((m) => (
+                  <option key={m._id} value={m._id}>
+                    {m.name} ({m.employeeId}) · {ROLE_BADGE[m.role] ?? m.role}
+                  </option>
+                ))}
               </select>
             </div>
 
